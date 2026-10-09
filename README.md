@@ -20,11 +20,11 @@ dispatcher** and compiled mini-language. Like `b`, it depends on nothing in the
 ecosystem; it is an orchestrator you point at anything.
 
 **Implemented and proven:** nothing. This is a **documentation-only blueprint**:
-`README.md`, `CLASSES.md`, `CONTRIBUTING.md`, `LICENSE`, `.gitignore` and an
+`README.md`, `CLASSES.md`, `CONTRIBUTING.md`, `func-preferences.md`, `LICENSE`, `.gitignore` and an
 IDE-only `LANGUAGES NONE` `CMakeLists.txt`. No `src/`, header or build target.
 
 **Specified only:** the object/class inventory in `CLASSES.md` (the first things
-to build).
+to build) and the forward contracts in [func-preferences.md](func-preferences.md).
 
 **Platforms proven:** none.
 
@@ -50,7 +50,9 @@ artifact without depending on them.
 - README / CONTRIBUTING / CLASSES
 
 ## Laws that govern work here
-- Constitution: the [canonical preferences.md Gist](https://gist.github.com/vex-graph/4132a6c45cb6d3797c3e8eff2e94035a); one real, Git-ignored workspace-root `../../../preferences.md`.
+- Constitution: the [canonical preferences.md Gist](https://gist.github.com/vex-graph/4132a6c45cb6d3797c3e8eff2e94035a); one real, Git-ignored workspace-root `../../preferences.md`.
+- Local lawbook: [func-preferences.md](func-preferences.md); actual workspace
+  constitution/test paths are `../../preferences.md` and `../../tests/`.
 - **Standalone Autonomy Law**: zero ecosystem dependency; it borrows no project header.
 - **Platform Support Floor Law** (arm64 / macOS 14+), **Build & Naming Conventions Law** (`-Wall -Wextra -Werror`, C23), **Single Class Per File Law**, **toString Law**, **Test Segregation Law** (`tests/func`).
 - Commits land in THIS repo root; never push unless asked.
