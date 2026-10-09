@@ -13,6 +13,8 @@ or standalone runtime build is claimed by this metadata entry.
 
 ## Current State
 
+**Draft — not finalized.** Documentation only; the scope below may change.
+
 **Role:** a **personal**, standalone C23 tool — a compile-time **opcode
 dispatcher** and compiled mini-language. Like `b`, it depends on nothing in the
 ecosystem; it is an orchestrator you point at anything.
