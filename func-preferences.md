@@ -13,9 +13,9 @@ inventory, not an API.
 
 | Law Title | Scope | Enforcement |
 | :--- | :--- | :--- |
-| Standalone Opcode Tool Law | Personal tooling dependency boundary | Future standalone build and source-owner proof |
-| Native Opcode Compilation Law | Numeric/surface input and generated artifacts | Future arity, malformed-input, compilation and artifact owners |
-| Bounded Tool Invocation Law | Compiler and external child execution | Future cancellation, output, failure and cleanup owners |
+| Standalone Opcode Tool Law | Personal tooling dependency boundary | Standalone native owner build; general orchestration remains future |
+| Native Opcode Compilation Law | Numeric/surface input and generated artifacts | Registered arity, malformed-input, compilation and artifact owners |
+| Bounded Tool Invocation Law | Compiler and external child execution | Registered deadline/output/failure/cleanup owners; no hostile-process sandbox claim |
 
 ### Standalone Opcode Tool Law
 
