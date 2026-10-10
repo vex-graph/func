@@ -8,8 +8,8 @@ Gist and report unavailable dependency/test checkouts as reading gaps.
 
 func is currently a source-free personal tooling blueprint. [CLASSES.md](CLASSES.md)
 describes intended classes, not a shipped API. [README.md](README.md) records
-current competency and limitations. Future builds belong to b, not the IDE-only
-CMake entry; no executable target currently exists.
+current competency and limitations. Builds belong to b/native compiler tooling;
+implementation readiness requires the owner's executable proof.
 
 Keep owner tests separate under the shared `tests/func/` partition when source
 lands. Prove actual behavior and hostile/failure paths before readiness claims;
