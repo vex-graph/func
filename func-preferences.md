@@ -23,7 +23,8 @@ headers or runtime implementation. Harness and other consumers invoke it as a
 tool; invoking func does not permit them to include its internals. Orchestrating
 ecosystem artifacts by explicit invocation does not transfer their ownership.
 The launcher/dispatch/contracts/opcodes layout in CLASSES.md is planned only.
-IDE CMake remains a source-free metadata entry, not build/runtime proof.
+Editor indexing belongs to the workspace; this source-free tool has no runtime
+build target yet.
 
 ### Native Opcode Compilation Law
 
