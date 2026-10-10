@@ -1,9 +1,10 @@
 # func — Objects & Classes to Build First
 
-> **Documentation only.** This is the design inventory for `func`, the personal
-> compile-time opcode orchestrator. Nothing here is implemented; it states what
-> to build and why, so the first classes land already governed by the
-> constitution. Cite every law by Title.
+> **Forward class inventory.** The initial procedural literal compiler now lives
+> in `src/func.c` and the build-only `func` launcher. It implements numeric/surface
+> add/mul/print, flat private rows and native C emission/compilation, not the public
+> classes listed below. The remaining inventory states future work; cite every
+> law by Title and do not mistake a class row for an implemented API.
 
 ## The core idea — one line
 
