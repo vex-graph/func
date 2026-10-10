@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+"""Build-only Func launcher: cold compiler orchestration, never a VM.
+
+Both decoding and native compilation are bounded subprocesses. Successful output
+is atomically replaced in an existing trusted parent; failures leave prior output
+unchanged. Compilers/parents are trusted, not a hostile-process sandbox.
+"""
+"""
+============================================================================
+MODULE: Func build-only launcher (func)
+============================================================================
+No persistent class or public fields are owned by this procedural host tool.
+
+FUNCTION REGISTRY:
+----------------------------------------------------------------------------
+Private child supervision:
+  - child(argv, timeout, data, cap)
+      Literal argv; simultaneous bounded stdin/stdout/stderr; deadline cleanup.
+Native build configuration:
+  - flags() : strict C23 and Apple Silicon/macOS 14 baseline where applicable
+CLI entry:
+  - main() : validate source/output; compile decoder; emit C; compile artifact;
+             atomically publish only on success; never execute the artifact
+
+Each build owns a private directory in an existing trusted output parent. Rejected
+source/compiler failure preserves the previous artifact and reclaims temporary
+files. Source is limited to 1 MiB; emitted C has a separate bounded output budget.
+Every compiler/decoder stage has a whole-job deadline. Cancellation kills/reaps
+its process group. No package manager, implicit installation, shell expansion,
+ecosystem dependency, VM or hostile-process sandbox is offered.
+============================================================================
+"""
+import argparse
+import math
+import os
+from pathlib import Path
+import selectors
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+
+ROOT = Path(__file__).resolve().parent
+SOURCE_CAP = 1024 * 1024
+DEFAULT_TIMEOUT = 60.0
+EMITTED_CAP = 64 * 1024 * 1024  # Safety ceiling exceeds worst-case 1 MiB source emission.
+
+
+def child(argv, timeout, data=b"", cap=EMITTED_CAP):
+    """Literal argv; whole-stage deadline; kill/reap the compiler process group."""
+    with subprocess.Popen(argv, start_new_session=True, stdin=subprocess.PIPE,
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE) as process:
+        with selectors.DefaultSelector() as selector:
+            output, error = bytearray(), bytearray()
+            for stream in (process.stdin, process.stdout, process.stderr):
+                os.set_blocking(stream.fileno(), False)
+            selector.register(process.stdout, selectors.EVENT_READ, output)
+            selector.register(process.stderr, selectors.EVENT_READ, error)
+            if data:
+                selector.register(process.stdin, selectors.EVENT_WRITE, None)
+            else:
+                process.stdin.close()
+            at = 0
+            deadline = time.monotonic() + timeout
+            try:
+                while selector.get_map():
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise ValueError("compiler stage deadline exceeded")
+                    for key, events in selector.select(min(remaining, 0.1)):
+                        stream = key.fileobj
+                        if events & selectors.EVENT_WRITE:
+                            try:
+                                at += os.write(stream.fileno(), data[at:at + 65536])
+                            except BrokenPipeError:
+                                at = len(data)
+                            if at == len(data):
+                                selector.unregister(stream)
+                                stream.close()
+                        else:
+                            block = os.read(stream.fileno(), 65536)
+                            if not block:
+                                selector.unregister(stream)
+                                stream.close()
+                            else:
+                                if len(key.data) + len(block) > cap:
+                                    raise ValueError("compiler output truncated: safety limit exceeded")
+                                key.data.extend(block)
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise ValueError("compiler stage deadline exceeded")
+                code = process.wait(timeout=remaining)
+                if code:
+                    raise ValueError(error.decode(errors="replace")[-4096:] or "compiler failed")
+                if error:
+                    raise ValueError("compiler emitted unexpected diagnostics")
+                return bytes(output)
+            except BaseException:
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+                process.wait(timeout=5)
+                raise
+
+
+def flags():
+    """Strict native baseline; no newer CPU requirement in shipped output."""
+    result = ["-std=gnu23", "-Wall", "-Wextra", "-Werror", "-O2"]
+    if sys.platform == "darwin":
+        result += ["-arch", "arm64", "-mcpu=apple-m1", "-mmacosx-version-min=14.0"]
+    return result
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Compile Func to native code; never implicitly run it.")
+    parser.add_argument("command", choices=["build"])
+    parser.add_argument("source", type=Path)
+    parser.add_argument("-o", "--output", required=True, type=Path)
+    parser.add_argument("--syntax", choices=["numeric", "surface"], default="surface")
+    parser.add_argument("--compiler", default="clang")
+    parser.add_argument("--timeout", type=float, default=DEFAULT_TIMEOUT)
+    args = parser.parse_args()
+    try:
+        if not math.isfinite(args.timeout) or not 0 < args.timeout <= 3600:
+            raise ValueError("timeout must be finite and in (0, 3600] seconds")
+        with args.source.open("rb") as stream:
+            source = stream.read(SOURCE_CAP + 1)
+        if len(source) > SOURCE_CAP:
+            raise ValueError("source exceeds 1 MiB safety limit")
+        output = args.output.absolute()
+        if output.is_symlink() or output.is_dir():
+            raise ValueError("output must not be a symlink or directory")
+        with tempfile.TemporaryDirectory(prefix=".func-", dir=output.parent) as directory:
+            home = Path(directory)
+            decoder = home / "decoder"
+            child([args.compiler, *flags(), str(ROOT / "src/func.c"), "-o", str(decoder)], args.timeout)
+            emitted = child([str(decoder), args.syntax], args.timeout, source)
+            generated = home / "program.c"
+            generated.write_bytes(emitted)
+            artifact = home / "artifact"
+            child([args.compiler, *flags(), str(generated), "-o", str(artifact)], args.timeout)
+            os.replace(artifact, output)
+        print(output)
+        return 0
+    except (OSError, ValueError, subprocess.SubprocessError) as error:
+        print(f"[vex] func: {error}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
