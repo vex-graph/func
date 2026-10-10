@@ -1,15 +1,7 @@
 # func — a personal, compile-time opcode orchestrator
 
-## CLion: CMake is IDE metadata only
-
-Open this repository root as a CMake project. `CMakeLists.txt` is an IDE-only
-blueprint entry: there are no production sources or C23 source targets yet, so
-there is nothing to provide semantic diagnostics or inlay hints for. No fake
-declarations, dependency downloads, linking or application runner are wired
-into it. IDE appearance is user-verified.
-
 Future builds belong to [b](https://github.com/vex-graph/b). No runnable target
-or standalone runtime build is claimed by this metadata entry.
+exists yet.
 
 ## Current State
 
@@ -20,8 +12,8 @@ dispatcher** and compiled mini-language. Like `b`, it depends on nothing in the
 ecosystem; it is an orchestrator you point at anything.
 
 **Implemented and proven:** nothing. This is a **documentation-only blueprint**:
-`README.md`, `CLASSES.md`, `CONTRIBUTING.md`, `func-preferences.md`, `LICENSE`, `.gitignore` and an
-IDE-only `LANGUAGES NONE` `CMakeLists.txt`. No `src/`, header or build target.
+`README.md`, `CLASSES.md`, `CONTRIBUTING.md`, `func-preferences.md`, `LICENSE`
+and `.gitignore`. No `src/`, header or build target.
 
 **Specified only:** the object/class inventory in `CLASSES.md` (the first things
 to build) and the forward contracts in [func-preferences.md](func-preferences.md).
@@ -46,7 +38,7 @@ artifact without depending on them.
 
 ## Shape (like b)
 - `func` launcher · `func.c` dispatch · `func.h` contracts · `opcodes/` registry
-- `annotation.h` zero-runtime markers · IDE-only `CMakeLists.txt`
+- `annotation.h` zero-runtime markers
 - README / CONTRIBUTING / CLASSES
 
 ## Laws that govern work here
