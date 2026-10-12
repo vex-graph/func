@@ -19,7 +19,7 @@ inventory, not an API.
 
 ### Standalone Opcode Tool Law
 
-func is a personal standalone tool, not an R1–R5 library. It borrows no ecosystem
+func is a personal standalone tool, not an R1–R6 library. It borrows no ecosystem
 headers or runtime implementation. Harness and other consumers invoke it as a
 tool; invoking func does not permit them to include its internals. Orchestrating
 ecosystem artifacts by explicit invocation does not transfer their ownership.
