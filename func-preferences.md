@@ -3,8 +3,8 @@
 ## Constitution Link
 
 The complete [workspace constitution](https://gist.github.com/vex-graph/4132a6c45cb6d3797c3e8eff2e94035a)
-governs this repository. Local path: `../../preferences.md`. Read it first, then
-this file, `../../tests/test-preferences.md`, the current checklist and actual
+governs this repository. Local path: `../../gist/PREFERENCES.md`. Read it first, then
+this file, `../../tests/test-preferences.md`, current `../../gist/test-checklist.md` and actual
 implementation. The initial literal compiler is implemented in `src/func.c` plus
 the Python build-only launcher `func`; general classes in `CLASSES.md` remain an
 inventory, not an API.
