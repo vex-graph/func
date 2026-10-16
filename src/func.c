@@ -13,7 +13,7 @@
 /* Cold, standalone compile-time decoder. Both input spellings produce flat
  * literal-only opcode rows, then C23 source. The emitted program contains no
  * parser or VM. The Python launcher owns compiler deadlines and publication.
- * No ecosystem headers, allocation ABI, or interpreted execution are borrowed. */
+ * No vexgraph-ecosystem-gitrepo headers, allocation ABI, or interpreted execution are borrowed. */
 ;;OVERVIEW
 /**
  * ============================================================================
