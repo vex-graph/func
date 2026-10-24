@@ -2,7 +2,7 @@
 
 ## Constitution Link
 
-The complete [workspace constitution](https://gist.github.com/vex-graph/4132a6c45cb6d3797c3e8eff2e94035a) governs this repository. Local path: `../../gist/PREFERENCES.md`. Read it first, then this file, `../../tests/test-preferences.md`, current `../../gist/test-checklist.md`, and implementation. The initial literal compiler is `src/func.c` plus Python build-only launcher `func`; `CLASSES.md` inventories planned general classes, not APIs.
+The complete [workspace constitution](https://gist.github.com/vex-graph/4132a6c45cb6d3797c3e8eff2e94035a) governs this repository. The binding law list is `gist.md` (`../../../metadata/gists/preferences/gist.md`); `../../../PREFERENCES.md` is its full rationale and is never ingested whole. Read the law first, then this file, the proof lawbook `../../../tests/test-preferences.md` (slice one law with `./tools/prefs test "<title>"`), the evidence ledger `../../../metadata/gists/test-checklist.md`, and implementation. The initial literal compiler is `src/func.c` plus Python build-only launcher `func`; `CLASSES.md` inventories planned general classes, not APIs.
 
 ## Law Index (Binding Matrix)
 
@@ -28,6 +28,6 @@ Compiler/build/run use literal argv and bounded child supervision, cancellation,
 
 ## Proof and Current Gaps
 
-Independent `../../tests/func/` owners mirror production units and run through an executable runner. Prove both input forms, all advertised arities, intended compile rejection, artifact execution/results, compiler-failure preservation/retry and bounded child lifecycle. Resource-owning classes need pressure, growth, exhaustion/recovery and legal occupancy proof under the Deliberate Exhaustion and Backend Trust Law before readiness claims.
+Independent `../../../tests/func/` owners mirror production units and run through an executable runner. Prove both input forms, all advertised arities, intended compile rejection, artifact execution/results, compiler-failure preservation/retry and bounded child lifecycle. Resource-owning classes need pressure, growth, exhaustion/recovery and legal occupancy proof under the Deliberate Exhaustion and Backend Trust Law before readiness claims.
 
-`python3 ../../tests/func/run.py` exercises literal decoding/native compilation, artifact execution, hostile rejection/growth and C ASan/UBSan. Builds are explicit (never run), deadline-bounded with capped stage output. Trusted stable output parent/compiler are preconditions, not sandbox claims. Python supervision is cold host work, not a shipped interpreted language. Gaps: OOM/leak instrumentation, general orchestration, platforms beyond the lab host and full Harness integration. Documentation checks confer no runtime readiness.
+`python3 ../../../tests/func/run.py` exercises literal decoding/native compilation, artifact execution, hostile rejection/growth and C ASan/UBSan. Builds are explicit (never run), deadline-bounded with capped stage output. Trusted stable output parent/compiler are preconditions, not sandbox claims. Python supervision is cold host work, not a shipped interpreted language. Gaps: OOM/leak instrumentation, general orchestration, platforms beyond the lab host and full Harness integration. Documentation checks confer no runtime readiness.
