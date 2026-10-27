@@ -51,9 +51,9 @@ goal, not a capability of the literal arithmetic slice.
 - README / CONTRIBUTING / CLASSES
 
 ## Laws that govern work here
-- Constitution: the [canonical preferences.md Gist](https://gist.github.com/vex-graph/4132a6c45cb6d3797c3e8eff2e94035a); one real, Git-ignored workspace `../../gist/PREFERENCES.md`.
+- Constitution: the [canonical preferences Gist](https://gist.github.com/vex-graph/4132a6c45cb6d3797c3e8eff2e94035a); the compressed workspace law list is `../../../metadata/gists/preferences/gist.md`.
 - Local lawbook: [func-preferences.md](func-preferences.md); actual workspace
-  constitution/test paths are `../../gist/PREFERENCES.md` and `../../tests/`.
+  constitution/test paths are `../../../metadata/gists/preferences/gist.md` and `../../../tests/`.
 - **Standalone Autonomy Law**: zero ecosystem dependency; it borrows no project header.
 - **Platform Support Floor Law** (arm64 / macOS 14+), **Build & Naming Conventions Law** (`-Wall -Wextra -Werror`, C23), **Single Class Per File Law**, **toString Law**, **Test Segregation Law** (`tests/func`).
 - Commits land in THIS repo root; never push unless asked.

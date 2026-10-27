@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "note": "Ratchet baseline: CI fails only when a file/rule count grows.",
+  "total": 99,
+  "counts": {
+    "src/func.c::Semantic Consistency Law (Control flow: header space)": 27,
+    "src/func.c::Semantic Consistency Law (Control flow: statement separation)": 72
+  }
+}
