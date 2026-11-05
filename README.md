@@ -23,7 +23,7 @@ Rejected source or compiler failure preserves the previous artifact.
 **Specified only:** the full object/class inventory in `CLASSES.md`, extensible
 opcode registry, references, control flow and general tool orchestration.
 
-**Proof scope:** registered offline owners under `tests/func` exercise real
+**Proof scope:** registered offline owners under `../../tests/func` exercise real
 native artifacts, both spellings, malformed/range/arity boundaries, growth,
 failure preservation/retry and C decoder ASan/UBSan. See the current shared
 checklist for executed evidence; no Linux/Windows/macOS 14 runtime or general
@@ -51,11 +51,11 @@ goal, not a capability of the literal arithmetic slice.
 - README / CONTRIBUTING / CLASSES
 
 ## Laws that govern work here
-- Constitution: the [canonical preferences Gist](https://gist.github.com/vex-graph/4132a6c45cb6d3797c3e8eff2e94035a); the compressed workspace law list is `../../../metadata/gists/preferences/gist.md`.
+- Constitution: the [canonical preferences Gist](https://gist.github.com/vex-graph/4132a6c45cb6d3797c3e8eff2e94035a); the compressed workspace law list is `../../metadata/gists/preferences/gist.md`.
 - Local lawbook: [func-preferences.md](func-preferences.md); actual workspace
-  constitution/test paths are `../../../metadata/gists/preferences/gist.md` and `../../../tests/`.
+  constitution/test paths are `../../metadata/gists/preferences/gist.md` and `../../../tests/`.
 - **Standalone Autonomy Law**: zero ecosystem dependency; it borrows no project header.
-- **Platform Support Floor Law** (arm64 / macOS 14+), **Build & Naming Conventions Law** (`-Wall -Wextra -Werror`, C23), **Single Class Per File Law**, **toString Law**, **Test Segregation Law** (`tests/func`).
+- **Platform Support Floor Law** (arm64 / macOS 14+), **Build & Naming Conventions Law** (`-Wall -Wextra -Werror`, C23), **Single Class Per File Law**, **toString Law**, **Test Segregation Law** (`../../tests/func`).
 - Commits land in THIS repo root; never push unless asked.
 
 ## Scope and Limitations

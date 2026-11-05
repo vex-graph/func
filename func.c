@@ -206,11 +206,11 @@ static bool emit(const Row *rows, size_t count) {
         const Row *row = &rows[i];
         fputs("{ int64_t a = ", stdout);
         literal((*row).left);
-        fputs(", b = ", stdout);
+        fputs(", b.sh = ", stdout);
         literal((*row).right);
-        fputs(", result = a; (void)b;\n", stdout);
+        fputs(", result = a; (void)b.sh;\n", stdout);
         if ((*row).opcode != PRINT_ID)
-            printf("if (__builtin_%s_overflow(a, b, &result)) { fputs(\"func: arithmetic overflow\\n\", stderr); return 1; }\n",
+            printf("if (__builtin_%s_overflow(a, b.sh, &result)) { fputs(\"func: arithmetic overflow\\n\", stderr); return 1; }\n",
                 (*row).opcode == ADD_ID ? "add" : "mul");
         fputs("printf(\"%\" PRId64 \"\\n\", result); }\n", stdout);
     }
