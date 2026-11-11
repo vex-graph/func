@@ -58,7 +58,7 @@ Two structural choices follow from the laws:
 |:---|:---|:---|:---|
 | `Opcode` | One numbered operation: its **id**, name, **arity**, native entry, flags | `id`, `name`, `arity`, `entry` | Single Class Per File Law; WHAT Law for `entry` |
 | `OpcodeRegistry` | The id-indexed opcode table; `get(id)`, `find(name)`, `add` | flat `Opcode` rows indexed by id | Data-Oriented Storage Law; No Hardcoding Law (grows) |
-| `Value` | A decoded constant operand (int/float/string) or a result reference | `kind`, `asInt`, `asFloat`, `asText` | Value Boundary Matrix Law (boundaries live here) |
+| `Value` | A decoded constant operand (int/f32/string) or a result reference | `kind`, `asInt`, `asFloat`, `asText` | Value Boundary Matrix Law (boundaries live here) |
 
 **First because** the id table is the whole language: the stream is meaningless
 without `id -> opcode + arity`.

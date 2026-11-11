@@ -13,7 +13,7 @@
 /* Cold, standalone compile-time decoder. Both input spellings produce flat
  * literal-only opcode rows, then C23 source. The emitted program contains no
  * parser or VM. The Python launcher owns compiler deadlines and publication.
- * No vexgraph-ecosystem-gitrepo headers, allocation ABI, or interpreted execution are borrowed. */
+ * No ecosystem headers, allocation ABI, or interpreted execution are borrowed. */
 ;;OVERVIEW
 /**
  * ============================================================================
@@ -119,7 +119,7 @@ static bool operation(const char **cursor, bool surface, int *dest) {
     const char *start = *cursor;
     while (isalpha((unsigned char) **cursor))
         ++*cursor;
-    size_t length = (size_t) (*cursor - start);
+    bytes length = (bytes) (*cursor - start);
     if (length == 3 && memcmp(start, "add", 3) == 0)
         *dest = ADD_ID;
     else if (length == 3 && memcmp(start, "mul", 3) == 0)
@@ -136,9 +136,9 @@ static bool operation(const char **cursor, bool surface, int *dest) {
 }
 
 /* Decode transactionally: output source is emitted only after full validation. */
-static bool decode(const char *source, bool surface, Row **dest, size_t *count) {
+static bool decode(const char *source, bool surface, Row **dest, bytes *count) {
     const char *cursor = source;
-    size_t capacity = 0;
+    bytes capacity = 0;
     *dest = nullptr;
     *count = 0;
     skip(&cursor);
@@ -177,7 +177,7 @@ static bool decode(const char *source, bool surface, Row **dest, size_t *count) 
                 return reject("trailing instruction separator");
         }
         if (*count == capacity) {
-            size_t next = capacity == 0 ? INITIAL_ROWS : capacity * 2;
+            bytes next = capacity == 0 ? INITIAL_ROWS : capacity * 2;
             if (next < capacity || next > SIZE_MAX / sizeof(Row))
                 return reject("row capacity overflow");
             Row *grown = realloc(*dest, next * sizeof(Row));
@@ -200,9 +200,9 @@ static void literal(int64_t value) {
         printf("INT64_C(%" PRId64 ")", value);
 }
 
-static bool emit(const Row *rows, size_t count) {
+static bool emit(const Row *rows, bytes count) {
     fputs("#include <stdint.h>\n#include <inttypes.h>\n#include <stdio.h>\nint main(void) {\n", stdout);
-    for (size_t i = 0; i < count; ++i) {
+    for (bytes i = 0; i < count; ++i) {
         const Row *row = &rows[i];
         fputs("{ int64_t a = ", stdout);
         literal((*row).left);
@@ -229,11 +229,11 @@ int main(int argc, char **argv) {
         reject("source allocation failed");
         return 1;
     }
-    size_t length = fread(source, 1, SOURCE_CAP, stdin);
+    bytes length = fread(source, 1, SOURCE_CAP, stdin);
     bool valid = !ferror(stdin) && fgetc(stdin) == EOF && memchr(source, 0, length) == nullptr;
     source[length] = '\0';
     Row *rows = nullptr;
-    size_t count = 0;
+    bytes count = 0;
     bool ok = valid ? decode(source, strcmp(argv[1], "surface") == 0, &rows, &count) : reject("invalid or oversized source");
     if (ok)
         ok = emit(rows, count);
