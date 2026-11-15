@@ -1,7 +1,7 @@
+#include "vex.h"
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
