@@ -25,9 +25,9 @@
  * PRIVATE HELPERS (file-local behaviorless decoded instruction record):
  * ----------------------------------------------------------------------------
  *   Row {
- *     int opcode;       // canonical operation ID: add=1, mul=2, print=3
- *     int64_t left;     // first signed decimal literal operand
- *     int64_t right;    // second literal; zero/unused for print
+ *     i32 opcode;       // canonical operation ID: add=1, mul=2, print=3
+ *     i64 left;     // first signed decimal literal operand
+ *     i64 right;    // second literal; zero/unused for print
  *   }
  *
  * FUNCTION REGISTRY:
@@ -68,9 +68,9 @@
 #define PRINT_ID 3
 
 typedef struct Row {
-    int opcode;
-    int64_t left;
-    int64_t right;
+    i32 opcode;
+    i64 left;
+    i64 right;
 } Row;
 
 /* One cold rejection diagnostic; callers propagate failure without more logs. */
@@ -81,18 +81,18 @@ static bool reject(const char *message) {
 
 /* Whitespace is permitted at token boundaries, never silently inside tokens. */
 static fn skip(const char **cursor) {
-    while (isspace((unsigned char) **cursor))
+    while (isspace((u8) **cursor))
         ++*cursor;
 }
 
 /* Parse a complete signed decimal integer without wrapping. */
-static bool integer(const char **cursor, int64_t *dest) {
+static bool integer(const char **cursor, i64 *dest) {
     skip(cursor);
     const char *start = *cursor;
     const char *digits = start;
     if (*digits == '-' || *digits == '+')
         ++digits;
-    if (!isdigit((unsigned char) *digits))
+    if (!isdigit((u8) *digits))
         return reject("expected decimal integer");
     errno = 0;
     char *end = nullptr;
@@ -100,24 +100,24 @@ static bool integer(const char **cursor, int64_t *dest) {
     if (errno == ERANGE || value < INT64_MIN || value > INT64_MAX)
         return reject("integer out of range");
     *cursor = end;
-    *dest = (int64_t) value;
+    *dest = (i64) value;
     return true;
 }
 
 /* Surface names and numeric IDs share the same canonical opcode identities. */
-static bool operation(const char **cursor, bool surface, int *dest) {
+static bool operation(const char **cursor, bool surface, i32 *dest) {
     skip(cursor);
     if (!surface) {
-        int64_t id;
+        i64 id;
         if (!integer(cursor, &id))
             return false;
         if (id != ADD_ID && id != MUL_ID && id != PRINT_ID)
             return reject("unknown opcode");
-        *dest = (int) id;
+        *dest = (i32) id;
         return true;
     }
     const char *start = *cursor;
-    while (isalpha((unsigned char) **cursor))
+    while (isalpha((u8) **cursor))
         ++*cursor;
     bytes length = (bytes) (*cursor - start);
     if (length == 3 && memcmp(start, "add", 3) == 0)
@@ -193,7 +193,7 @@ static bool decode(const char *source, bool surface, Row **dest, bytes *count) {
 }
 
 /* Emit INT64_MIN safely; native arithmetic checks reject before overflowing. */
-static fn literal(int64_t value) {
+static fn literal(i64 value) {
     if (value == INT64_MIN)
         fputs("INT64_MIN", stdout);
     else
@@ -219,7 +219,7 @@ static bool emit(const Row *rows, bytes count) {
 }
 
 /* Read a bounded stdin unit, emit C, free all temporary compiler state. */
-int main(int argc, char **argv) {
+i32 main(i32 argc, char **argv) {
     if (argc != 2 || (strcmp(argv[1], "numeric") != 0 && strcmp(argv[1], "surface") != 0)) {
         reject("usage: decoder numeric|surface < source");
         return 1;
