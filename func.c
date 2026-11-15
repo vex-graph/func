@@ -80,7 +80,7 @@ static bool reject(const char *message) {
 }
 
 /* Whitespace is permitted at token boundaries, never silently inside tokens. */
-static void skip(const char **cursor) {
+static fn skip(const char **cursor) {
     while (isspace((unsigned char) **cursor))
         ++*cursor;
 }
@@ -193,7 +193,7 @@ static bool decode(const char *source, bool surface, Row **dest, bytes *count) {
 }
 
 /* Emit INT64_MIN safely; native arithmetic checks reject before overflowing. */
-static void literal(int64_t value) {
+static fn literal(int64_t value) {
     if (value == INT64_MIN)
         fputs("INT64_MIN", stdout);
     else
