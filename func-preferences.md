@@ -2,7 +2,7 @@
 
 ## Constitution Link
 
-gist.md (`../../metadata/gists/preferences/gist.md`) is the compressed law list; all universal laws bind this repository. Read one on demand: `./tools/prefs law "<title>"`. Universal laws are inherited, never restated.
+gist.md (`../../../metadata/gists/preferences/gist.md`) is the compressed law list; all universal laws bind this repository. Read one on demand: `./tools/prefs law "<title>"`. Universal laws are inherited, never restated.
 
 Tier: tool. Owns: personal standalone opcode tool. Borrows: no ecosystem headers or runtime.
 
@@ -15,7 +15,7 @@ Tier: tool. Owns: personal standalone opcode tool. Borrows: no ecosystem headers
 
 ### Standalone Opcode Tool Law
 
-* `func` is a personal standalone tool, not an R1–R6 library; it borrows no ecosystem headers or runtime.
+* `func` is a personal standalone tool, not a `lifetime` / `core` / `app` library; it borrows no ecosystem headers or runtime.
 * Harness and others invoke it, never include internals.
 * Explicit artifact orchestration transfers no ownership.
 
