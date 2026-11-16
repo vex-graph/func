@@ -8,6 +8,7 @@
 
 #define DEFINITION _Static_assert(1, "native opcode compiler");
 #define OVERVIEW _Static_assert(1, "compiler module map");
+#define GETTER _Static_assert(1, "row field getter");
 
 ;;DEFINITION
 /* Cold, standalone compile-time decoder. Both input spellings produce flat
@@ -72,6 +73,15 @@ typedef struct Row {
     i64 left;
     i64 right;
 } Row;
+
+;;GETTER
+static i32 Row_opcode(const Row *row) { return (*row).opcode; }
+
+;;GETTER
+static i64 Row_left(const Row *row) { return (*row).left; }
+
+;;GETTER
+static i64 Row_right(const Row *row) { return (*row).right; }
 
 /* One cold rejection diagnostic; callers propagate failure without more logs. */
 static bool reject(const char *message) {
@@ -205,13 +215,13 @@ static bool emit(const Row *rows, bytes count) {
     for (bytes i = 0; i < count; ++i) {
         const Row *row = &rows[i];
         fputs("{ int64_t a = ", stdout);
-        literal((*row).left);
+        literal(Row_left(row));
         fputs(", b.sh = ", stdout);
-        literal((*row).right);
+        literal(Row_right(row));
         fputs(", result = a; (void)b.sh;\n", stdout);
-        if ((*row).opcode != PRINT_ID)
+        if (Row_opcode(row) != PRINT_ID)
             printf("if (__builtin_%s_overflow(a, b.sh, &result)) { fputs(\"func: arithmetic overflow\\n\", stderr); return 1; }\n",
-                (*row).opcode == ADD_ID ? "add" : "mul");
+                Row_opcode(row) == ADD_ID ? "add" : "mul");
         fputs("printf(\"%\" PRId64 \"\\n\", result); }\n", stdout);
     }
     fputs("return 0; }\n", stdout);
